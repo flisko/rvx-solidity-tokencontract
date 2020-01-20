@@ -1,42 +1,24 @@
 {
-  "name": "web3-react-v6",
+  "name": "locals-faucetserver",
   "version": "1.0.0",
   "description": "",
-  "keywords": [],
-  "main": "src/index.js",
-  "dependencies": {
-    "@ethersproject/providers": "5.0.0-beta.146",
-    "@ethersproject/units": "5.0.0-beta.132",
-    "@web3-react/authereum-connector": "6.0.2",
-    "@web3-react/core": "6.0.2",
-    "@web3-react/fortmatic-connector": "6.0.2",
-    "@web3-react/frame-connector": "6.0.2",
-    "@web3-react/injected-connector": "6.0.3",
-    "@web3-react/ledger-connector": "6.0.4",
-    "@web3-react/network-connector": "6.0.4",
-    "@web3-react/portis-connector": "6.0.2",
-    "@web3-react/squarelink-connector": "6.0.2",
-    "@web3-react/torus-connector": "6.0.2",
-    "@web3-react/trezor-connector": "6.0.4",
-    "@web3-react/walletconnect-connector": "6.0.2",
-    "@web3-react/walletlink-connector": "6.0.2",
-    "react": "16.12.0",
-    "react-dom": "16.12.0",
-    "react-scripts": "3.3.0"
-  },
-  "devDependencies": {
-    "typescript": "3.3.3"
-  },
+  "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bitcore-mnemonic": "1.0.1",
+    "cors": "2.7.1",
+    "eth-lightwallet": "2.3.1",
+    "express": "4.13.4",
+    "hooked-web3-provider": "1.0.0",
+    "level": "^3.0.0",
+    "lodash": "4.11.1",
+    "mkdirp": "^0.5.1",
+    "nodemon": "^2.0.2",
+    "sha3": "1.2.1",
+    "web3": "^1.2.5-rc.0"
+  }
 }
