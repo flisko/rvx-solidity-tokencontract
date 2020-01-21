@@ -1,0 +1,11 @@
+{
+	"etherscanroot": "http://ropsten.etherscan.io",
+	"payoutfrequencyinsec": 1,
+	"payoutamountinether": 10000,
+	"queuesize": 10,
+	"walletpwd": "Rivex123!",
+	"httpport": 3008,
+	"web3": {
+		"host": "https://ropsten.infura.io/v3/2a71c9e4dd224ee8a9f2edf5bbb21ce1"
+	}
+}
