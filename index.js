@@ -101,6 +101,15 @@ app.use(cors());
 // frontend app is served from here
 app.use(express.static("static/build"));
 
+app.get("/faucetenabled",async(req,res)=>{
+  let isfaucetenabled = await Promise.all([
+    token.methods.faucet().call()
+  ]);
+  res.status(200).json({
+    faucetenabled:isfaucetenabled
+  });
+})
+
 // get current faucet info
 app.get("/faucetinfo", async(req, res) =>{
   var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;

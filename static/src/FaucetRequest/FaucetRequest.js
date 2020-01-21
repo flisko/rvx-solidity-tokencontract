@@ -8,11 +8,12 @@ import timespan from "timespan";
 class FaucetRequest extends Component {
   constructor(props) {
     super(props);
-    this.state = { targetAccount: "", requestrunning: false };
+    this.state = { targetAccount: "", requestrunning: false,faucetenabled: false };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.clearMessages = this.clearMessages.bind(this);
+    this.faucetenabled = this.facutedEnabled.bind(this);
   }
 
   handleChange(event) {
@@ -22,9 +23,34 @@ class FaucetRequest extends Component {
   clearMessages(event) {
     this.setState({ faucetresponse: null, fauceterror: null });
   }
+  async facutedEnabled() {
+    let apiUrl = config.get("apiurl") + "/faucetenabled/";
+    axios
+    .get(apiUrl)
+    .then(response => {
+      if(response.status ===200){
+        if(response.data.faucetenabled[0]){
+          this.setState({faucetenabled:false});
+        }else{
+          this.setState({faucetenabled:true});
+        }
+      }
+    })
+    .catch(error => {
+      if (!error || !error.response) {
+        this.setState({
+          fauceterror: {
+            message: 'Error getting faucet status: ' + error.message,
+          }
+        });
+        return;
+      }
+    });
+  }
 
   handleSubmit(event) {
     this.clearMessages();
+    this.faucetenabled();
     if (Eth.isAddress(this.state.targetAccount)) {
       this.setState({ requestrunning: true });
 
@@ -75,7 +101,8 @@ class FaucetRequest extends Component {
     event.preventDefault();
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    await this.faucetenabled();
     window.addEventListener("load", () => {
       // See if there is a pubkey on the URL
       let urlTail = window.location.search.substring(1);
@@ -133,7 +160,7 @@ class FaucetRequest extends Component {
               <div className="field is-grouped">
                 <div className="control">
                   <button
-                    disabled={this.state.requestrunning}
+                    disabled={this.state.faucetenabled}
                     className="button is-link"
                   >
                     Send me testnet RVX
