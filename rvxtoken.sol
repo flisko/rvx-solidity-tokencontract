@@ -229,7 +229,7 @@ contract RVXToken is MinterRole, Ownable, IERC20 {
         _owner.transfer(address(this).balance);
     }
 
-    function toggleFaucet() onlyOwner public {
+    function toggleFaucet() onlyOperator public {
         faucetEnabled = !faucetEnabled;
     }
 
