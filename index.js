@@ -87,6 +87,7 @@ lightwallet.keystore.deriveKeyFromPassword(config.walletpwd, function(
   // https.createServer(options, app).listen(443);
 });
 
+
 // Get RVX token balance in operator wallet
 async function getFaucetBalance(denomination) {
   let tokenBalance = await Promise.all([
@@ -101,6 +102,8 @@ app.use(cors());
 // frontend app is served from here
 app.use(express.static("static/build"));
 
+
+
 app.get("/faucetenabled",async(req,res)=>{
   let isfaucetenabled = await Promise.all([
     token.methods.faucet().call()
@@ -109,6 +112,152 @@ app.get("/faucetenabled",async(req,res)=>{
     faucetenabled:isfaucetenabled
   });
 })
+
+app.get("/operatoraddress",async(req,res)=>{
+  let operatorAddress = await Promise.all([
+    token.methods.operator().call(),
+    token.methods._owner().call()
+    
+  ]);
+  console.log(operatorAddress[0]);
+  console.log(operatorAddress[1]);
+  res.status(200).json({
+    operatoraddress:operatorAddress[0],
+    owneraddress:operatorAddress[1]
+  });
+})
+
+app.get("/faucettoggle",async(req,res)=>{
+  
+  doFaucetToggle()
+  .then(txhash => {
+    Promise.all([
+    ]).then(() => {
+      var reply = {
+        txhash: txhash
+      };
+      return res.status(200).json(reply);
+    });
+  })
+  .catch(e => {
+    return res.status(500).json({
+      err: e.message
+    });
+  });
+})
+setTimeout(()=>{
+  getTokenAmount();
+},200)
+app.get("/changetokenamount/:amount",async(req,res)=>{
+  var amount = parseInt(req.params.amount);
+  config.payoutamountinether = amount;
+  doChangeToken(amount)
+  .then(txhash => {
+    Promise.all([
+    ]).then(() => {
+      var reply = {
+        txhash: txhash
+      };
+      return res.status(200).json(reply);
+    });
+  })
+  .catch(e => {
+    return res.status(500).json({
+      err: e.message
+    });
+  });
+
+
+})
+async function getTokenAmount(){
+  let tokenAmount = await Promise.all([
+    token.methods.testtokenAmount().call()
+  ]);
+    let amount = parseInt(tokenAmount)/1e18;
+    config.payoutamountinether = amount;
+    return;  
+}
+
+async function ChangeToken(tokenamount,cb){
+  let gasPrice = Math.max((await web3.eth.getGasPrice()) - 0, 21e9);
+  web3.eth.getGasPrice(async(err, result)=> {
+    console.log("result:"+result);
+    var amount = config.payoutamountinether * 1e18;
+    console.log("amount:"+amount);
+    console.log("Transferring ", amount, "wei from", account);
+
+    var options = {
+      from: account,
+      gas: 314150,
+      gasPrice: gasPrice
+    };
+    console.log(options);
+    token.methods.changeTestTokenAmount(tokenamount).send(options,function(err,result){
+      {
+        if (err != null) {
+          console.log(err);
+          console.log("ERROR: Transaction didn't go through. See console.");
+        } else {
+          console.log("Transaction Successful!");
+          console.log(result);
+        }
+        return cb(err, result);
+      }
+    });
+  });
+}
+function doChangeToken(amount) {
+  return new Promise((resolve, reject) => {
+    ChangeToken(amount,(err, txhash) => {
+      if (err) {
+        resolve("0x0");
+      } else {
+        resolve(txhash);
+      }
+    });
+  });
+}
+async function toggleFaucet(cb) {
+  let gasPrice = Math.max((await web3.eth.getGasPrice()) - 0, 21e9);
+   web3.eth.getGasPrice(async(err, result)=> {
+     console.log("result:"+result);
+     var amount = config.payoutamountinether * 1e18;
+     console.log("amount:"+amount);
+     console.log("Transferring ", amount, "wei from", account);
+ 
+     var options = {
+       from: account,
+       gas: 314150,
+       gasPrice: gasPrice
+     };
+     console.log(options);
+     token.methods.toggleFaucet().send(options,function(err,result){
+       {
+         if (err != null) {
+           console.log(err);
+           console.log("ERROR: Transaction didn't go through. See console.");
+         } else {
+           console.log("Transaction Successful!");
+           console.log(result);
+         }
+         return cb(err, result);
+       }
+     });
+   });
+ }
+
+function doFaucetToggle() {
+  return new Promise((resolve, reject) => {
+    toggleFaucet((err, txhash) => {
+      if (err) {
+        resolve("0x0");
+      } else {
+        resolve(txhash);
+      }
+    });
+  });
+}
+
 
 // get current faucet info
 app.get("/faucetinfo", async(req, res) =>{

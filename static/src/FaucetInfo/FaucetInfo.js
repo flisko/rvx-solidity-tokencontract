@@ -45,7 +45,7 @@ class FaucetInfo extends Component {
     return (
       <section className="section">
         <div className="content has-text-centered has-text-weight-light has-text-grey-light">
-          <p>With <span role="img" aria-label="heart">❤️</span> provided by:{" "}
+    <p>Sending {this.state.faucetinfo.payoutamountinether} With <span role="img" aria-label="heart">❤️</span> provided by:{" "}
             <a target="_new" href={this.state.faucetinfo.etherscanlink}>
               {this.state.faucetinfo.account}
             </a>

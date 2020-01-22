@@ -4,16 +4,21 @@ import Eth from "ethjs";
 import config from "react-global-configuration";
 import axios from "axios";
 import timespan from "timespan";
+import Web3 from "web3";
 
-class FaucetRequest extends Component {
+export class FaucetRequest extends Component {
   constructor(props) {
     super(props);
-    this.state = { targetAccount: "", requestrunning: false,faucetenabled: false };
+    this.state = { targetAccount: "", requestrunning: false,faucetenabled: false , useraccount:""};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.clearMessages = this.clearMessages.bind(this);
-    this.faucetenabled = this.facutedEnabled.bind(this);
+    this.faucetEnabled = this.faucetEnabled.bind(this);
+    this.updateAddress = this.updateAddress.bind(this);
+  }
+  async updateAddress(value){
+    this.setState({useraccount:value});
   }
 
   handleChange(event) {
@@ -23,7 +28,7 @@ class FaucetRequest extends Component {
   clearMessages(event) {
     this.setState({ faucetresponse: null, fauceterror: null });
   }
-  async facutedEnabled() {
+ async faucetEnabled() {
     let apiUrl = config.get("apiurl") + "/faucetenabled/";
     axios
     .get(apiUrl)
@@ -50,7 +55,7 @@ class FaucetRequest extends Component {
 
   handleSubmit(event) {
     this.clearMessages();
-    this.faucetenabled();
+    this.faucetEnabled();
     if (Eth.isAddress(this.state.targetAccount)) {
       this.setState({ requestrunning: true });
 
@@ -58,7 +63,7 @@ class FaucetRequest extends Component {
       axios
         .get(apiUrl)
         .then(response => {
-          this.setState({ requestrunning: false });
+          this.setState({ requestrunning: true });
           if (response.status === 200) {
             this.setState({
               faucetresponse: {
@@ -101,40 +106,45 @@ class FaucetRequest extends Component {
     event.preventDefault();
   }
 
-  async componentDidMount() {
-    await this.faucetenabled();
-    window.addEventListener("load", () => {
-      // See if there is a pubkey on the URL
-      let urlTail = window.location.search.substring(1);
-      if (Eth.isAddress(urlTail)){
-        this.setState({ targetAccount: urlTail });
-        return;
-      }
+  componentWillMount() {
 
-      // If web3 is not injected (modern browsers)...
-      if (typeof window.web3 === "undefined") {
-        // Listen for provider injection
-        window.addEventListener("message", ({ data }) => {
-          if (data && data.type && data.type === "ETHEREUM_PROVIDER_SUCCESS") {
-            this.eth = new Eth(window.ethereum);
-          }
-        });
-        // Request provider
-        window.postMessage({ type: "ETHEREUM_PROVIDER_REQUEST" }, "*");
-      }
-      // If web3 is injected (legacy browsers)...
-      else {
-        this.eth = new Eth(window.web3.currentProvider);
-        this.eth
-          .accounts()
-          .then(accounts => {
-            if (accounts && accounts[0]) {
-              this.setState({ targetAccount: accounts[0] });
+   
+  }
+  async componentDidMount() {
+    localStorage.clear();
+    this.faucetEnabled();
+     window.addEventListener('load', function () {
+  
+      if (typeof web3 !== 'undefined') {        
+          window.web3 = new Web3(window.web3.currentProvider)
+  
+          if (window.web3.currentProvider.isMetaMask === true) {
+            try {
+              // Request account access if needed
+              Promise.all([
+                window.ethereum.enable()
+              ]);
+              window.web3.eth.getAccounts((error, accounts) => {
+                if (accounts.length === 0) {
+
+                }
+                else {
+                  localStorage.setItem("useraccount",accounts);
+                  //  console.log("accounts:"+accounts);
+                }
+            });
+              // Acccounts now exposed
+            } catch (error) {
+              console.error(error);
             }
-          })
-          .catch(() => {});
-      }
-    });
+            
+          } else {
+              // Another web3 provider
+          }
+      } else {
+          // No web 3 provider
+      }    
+  });
   }
 
   render() {

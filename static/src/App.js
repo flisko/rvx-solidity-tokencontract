@@ -6,6 +6,7 @@ import FaucetInfo from "./FaucetInfo/FaucetInfo";
 import FaucetRequest from "./FaucetRequest/FaucetRequest";
 import config from "react-global-configuration";
 import configuration from "./config";
+import FaucetAdmin from "./FaucetAdmin/FaucetAdmin";
 
 config.set(configuration);
 
@@ -24,6 +25,7 @@ class App extends Component {
           <div className="container">
             <FaucetRequest />
             <FaucetInfo />
+            <FaucetAdmin/>
           </div>
        
       </div>
