@@ -176,8 +176,7 @@ interface IERC20 {
 
 contract RVXToken is MinterRole, Ownable, IERC20 {
 
-    using SafeMath
-    for uint;
+    using SafeMath for uint256;
     bool private faucetEnabled = true;
     uint256 private testTokenAmount = 10 ** 21;
     string private _name;
@@ -244,7 +243,7 @@ contract RVXToken is MinterRole, Ownable, IERC20 {
 
 
     function changeTestTokenAmount(uint256 amount) public onlyOperator returns(bool) {
-        testTokenAmount = amount * 1000000000000000000;
+        testTokenAmount = amount.mul(1000000000000000000);
         return true;
     }
 
