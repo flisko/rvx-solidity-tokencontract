@@ -8,7 +8,7 @@
       "type": "constructor"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.11+commit.c082d0b4\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/D/gwan-windows-amd64-2.1.4-79b5c81b/deployment/contracts/RVXToken.sol\":\"Context\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/D/gwan-windows-amd64-2.1.4-79b5c81b/deployment/contracts/RVXToken.sol\":{\"keccak256\":\"0x0fa675cf15cb388e3e661cbf38feeba913ff0fa7223163d4f566479bdec0b04e\",\"urls\":[\"bzz-raw://142d5c5188d98b92abf6aa79c478bf6203a70cf8e8e29186ef1a8cb6d34b4062\",\"dweb:/ipfs/QmU1jshW6Km3LqHw8NLZSUPUEC6WdFLZujkjKik6mdcMa8\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.11+commit.c082d0b4\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/D/gwan-windows-amd64-2.1.4-79b5c81b/deployment/contracts/RVXToken.sol\":\"Context\"},\"evmVersion\":\"byzantium\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"/D/gwan-windows-amd64-2.1.4-79b5c81b/deployment/contracts/RVXToken.sol\":{\"keccak256\":\"0x0fa675cf15cb388e3e661cbf38feeba913ff0fa7223163d4f566479bdec0b04e\",\"urls\":[\"bzz-raw://142d5c5188d98b92abf6aa79c478bf6203a70cf8e8e29186ef1a8cb6d34b4062\",\"dweb:/ipfs/QmU1jshW6Km3LqHw8NLZSUPUEC6WdFLZujkjKik6mdcMa8\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "sourceMap": "",
@@ -30709,7 +30709,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.23",
-  "updatedAt": "2020-02-03T18:47:42.740Z",
+  "updatedAt": "2020-02-03T19:00:50.986Z",
   "devdoc": {
     "methods": {}
   },
