@@ -3,11 +3,11 @@ module.exports = {
       development: {
           host: 'localhost',
           port: 8545,
-          network_id: '*',
+          network_id: '3',
           gas: 4000000,
           gasPrice: 180e9,
           // following address needed to be replaced with unlocked account on gwan node
-          from: '0xDD24b8551e1547cE0cb1591025a3cE0A23d4cb43'
+          from: '0x14ef9a5100dc4dccda028fa4936e63e31c75c5e1'
       }
   },
   compilers: {

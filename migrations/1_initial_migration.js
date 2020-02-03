@@ -1,5 +1,5 @@
-const RVXToken = artifacts.require("RVXToken");
+const Migrations = artifacts.require("Migrations");
 
 module.exports = function(deployer) {
-  deployer.deploy(RVXToken);
+  deployer.deploy(Migrations);
 };
