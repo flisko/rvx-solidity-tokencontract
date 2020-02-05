@@ -1,5 +1,5 @@
 module.exports = {
-    contract_address: "0x937F3A6e0bDF19570ceD7D55B3c4D69ddFA290E8",
+    contract_address: "0x97626dA35b3290c9C86Df26656eDE4F56c60d52B",
     contract_ABI: [
         {
             "constant": false,

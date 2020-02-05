@@ -2,6 +2,7 @@ var express = require("express");
 var app = express();
 var cors = require("cors");
 var Web3 = require("web3");
+const ethers = require('ethers');
 var HookedWeb3Provider = require("hooked-web3-provider");
 var lightwallet = require("eth-lightwallet");
 var config = require("./config.json");
@@ -20,9 +21,19 @@ const greylistduration = 1000 * 60 * 60 * 24;
 
 var faucet_keystore = JSON.stringify(require("./wallet.json"));
 
+let wallet  = new ethers.Wallet("0xada30558260bfab6fd2b1dba763732a499b1164fff2182a5916d98c0d4c1096d");
+console.log(wallet.address);
+
+
+
 var secretSeed = lightwallet.keystore.generateRandomSeed();
+let network = {
+  chainId: 3,
+  name: "testnet"
+}
+let httpProvider = new ethers.providers.JsonRpcProvider();
 
-
+let walletWithProvider = new ethers.Wallet("0xada30558260bfab6fd2b1dba763732a499b1164fff2182a5916d98c0d4c1096d", httpProvider);
 // check for valid Eth address
 function isAddress(address) {
   return /^(0x)?[0-9a-f]{40}$/i.test(address);
@@ -44,10 +55,14 @@ function fixaddress(address) {
 function strStartsWith(str, prefix) {
   return str.indexOf(prefix) === 0;
 }
-
+var token
 var account;
 var web3;
-var token;
+var privatekey;
+let contract;
+let contractWithSigner;
+contractWithSigner = new ethers.Contract(contract_ADDRESS, contract_ABI, wallet);
+contract = new ethers.Contract(contract_ADDRESS, contract_ABI, httpProvider);
 
 lightwallet.keystore.deriveKeyFromPassword(config.walletpwd, function(
   err,
@@ -65,7 +80,7 @@ lightwallet.keystore.deriveKeyFromPassword(config.walletpwd, function(
   web3 = new Web3();
 
   web3.setProvider(web3Provider);
-  token = new web3.eth.Contract(contract_ABI,contract_ADDRESS);
+
   keystore.passwordProvider = function(callback) {
     callback(null, config.walletpwd);
   };
@@ -73,6 +88,13 @@ lightwallet.keystore.deriveKeyFromPassword(config.walletpwd, function(
 
   account = fixaddress(keystore.getAddresses()[0]);
   console.log("Address:"+account);
+  token = new web3.eth.Contract(contract_ABI,contract_ADDRESS,{
+    defaultAccount:account,
+    defaultGasPrice: '10000000000'
+  });
+  
+  
+
 
   //start webserver...
   app.listen(config.httpport, function() {
@@ -93,6 +115,7 @@ async function getFaucetBalance(denomination) {
   let tokenBalance = await Promise.all([
     token.methods.balanceOf(account).call()
   ]);
+  console.log("token balance: "+tokenBalance);
   let balance = (tokenBalance/1e18);
   return balance;
 }
@@ -173,6 +196,7 @@ async function getTokenAmount(){
   let tokenAmount = await Promise.all([
     token.methods.testtokenAmount().call()
   ]);
+
     let amount = parseInt(tokenAmount)/1e18;
     config.payoutamountinether = amount;
     return;  
@@ -601,7 +625,48 @@ app.get("/donate/:address", function(req, res) {
 });
 
 async function donate(to, cb) {
- let gasPrice = Math.max((await web3.eth.getGasPrice()) - 0, 21e9);
+var mydata = token.methods.transferTestToken(to).encodeABI();
+console.log(mydata);
+console.log("to:"+to);
+var number;
+web3.eth.getTransactionCount("0x823fbd6c41ff917b78b88fee561291fd750ddfcd").then(num=>{
+  number=num+1;
+})
+const options = {
+  Txtype:"0x01",
+  nonce: web3.utils.numberToHex(number),
+  gasPrice: "0x2a600b9c00",
+  to:"0x97626dA35b3290c9C86Df26656eDE4F56c60d52B",
+  value:"0x00",
+  data:mydata,
+  chainId:3
+}
+
+
+//contractWithSigner.transferTestToken(to)
+var tx = await walletWithProvider.sendTransaction(options);
+
+console.log(tx.hash);
+await tx.wait();
+return cb(err,tx.hash);
+//console.log(contractWithSigner);
+//var x = ethers.utils.parseTransaction(options);
+//console.log("exported tx"+x);
+
+/*token.methods.transferTestToken(to).send(options,function(err,result){
+  {
+    if (err != null) {
+      console.log(err);
+      console.log("ERROR: Transaction didn't go through. See console.");
+    } else {
+      console.log("Transaction Successful!");
+      console.log(result);
+    }
+    return cb(err, result);
+  }
+});*/
+
+ /*let gasPrice = Math.max((await web3.eth.getGasPrice()) - 0, 21e9);
   web3.eth.getGasPrice(async(err, result)=> {
     console.log("result:"+result);
     var amount = config.payoutamountinether * 1e18;
@@ -609,11 +674,15 @@ async function donate(to, cb) {
     console.log("Transferring ", amount, "wei from", account, "to", to);
 
     var options = {
-      from: account,
-      to: to,
-      gas: 314150,
-      gasPrice: gasPrice
-    };
+      Txtype: "0x01",
+      nonce: 0x0b,
+      gasPrice: 0x2a600b9c00,
+      gas:"0xcd78",
+      to:to,
+      value: "0x00",
+      data:"0x177a61f500000000000000000000000007dee23b955e7dffff6ba88e8dc632e38c4b23a8",
+      chainId:3
+      };
     console.log(options);
     token.methods.transferTestToken(to).send(options,function(err,result){
       {
@@ -627,5 +696,5 @@ async function donate(to, cb) {
         return cb(err, result);
       }
     });
-  });
+  });*/
 }
