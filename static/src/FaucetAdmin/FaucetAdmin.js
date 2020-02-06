@@ -24,7 +24,7 @@ class FaucetAdmin extends Component {
 
   handleFaucetEnable(event){
     this.clearMessages();
-    let apiUrl = config.get("apiurl") + "/faucettoggle";
+    let apiUrl = "/faucettoggle";
     axios
       .get(apiUrl)
       .then(response => {
@@ -69,7 +69,7 @@ class FaucetAdmin extends Component {
 handleFaucetTokenChange(){
   this.clearMessages();
   if(isNumber(parseInt(this.state.inputText))){
-    let apiUrl = config.get("apiurl") + "/changetokenamount/"+this.state.inputText;
+    let apiUrl = "/changetokenamount/"+this.state.inputText;
     axios
       .get(apiUrl)
       .then(response => {
@@ -128,7 +128,7 @@ handleFaucetTokenChange(){
    }
 
    getOperatorAddress(){
-    let apiUrl = config.get("apiurl") + "/operatoraddress";
+    let apiUrl = "/operatoraddress";
 
     axios
     .get(apiUrl)
