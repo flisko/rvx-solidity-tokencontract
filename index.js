@@ -97,7 +97,7 @@ lightwallet.keystore.deriveKeyFromPassword(config.walletpwd, function(
 
 
     //start webserver...
-    app.listen(port, function() {
+    app.listen(port,'0.0.0.0', function() {
         console.log("faucet listening on port ", port);
     });
 
@@ -120,7 +120,7 @@ async function getFaucetBalance(denomination) {
     return balance;
 }
 
-app.use(cors());
+app.use(cors({origin: '*'}));
 
 // frontend app is served from here
 app.use(express.static("static/build"));
