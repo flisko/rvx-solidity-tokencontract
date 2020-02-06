@@ -28,7 +28,7 @@ var KeyPair = /** @class */ (function () {
         properties_1.defineReadOnly(this, 'privateKey', bytes_1.hexlify(keyPair.priv.toArray('be', 32)));
         properties_1.defineReadOnly(this, 'publicKey', '0x' + keyPair.getPublic(false, 'hex'));
         properties_1.defineReadOnly(this, 'compressedPublicKey', '0x' + keyPair.getPublic(true, 'hex'));
-        properties_1.defineReadOnly(this, 'publicKeyBytes', keyPair.getPublic().encode(null, true));
+      //  properties_1.defineReadOnly(this, 'publicKeyBytes', keyPair.getPublic().encode(null, true));
     }
     KeyPair.prototype.sign = function (digest) {
         var keyPair = getCurve().keyFromPrivate(bytes_1.arrayify(this.privateKey));
