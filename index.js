@@ -10,7 +10,7 @@ const mkdirp = require("mkdirp");
 const level = require("level");
 const contract_ABI = require("./contract").contract_ABI;
 const contract_ADDRESS = require("./contract").contract_address;
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3008;
 mkdirp.sync(require("os").homedir() + "/.ethfaucetssl/queue");
 mkdirp.sync(require("os").homedir() + "/.ethfaucetssl/exceptions");
 const dbQueue = level(require("os").homedir() + "/.ethfaucetssl/queue");
