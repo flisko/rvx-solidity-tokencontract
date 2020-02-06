@@ -10,7 +10,7 @@ const mkdirp = require("mkdirp");
 const level = require("level");
 const contract_ABI = require("./contract").contract_ABI;
 const contract_ADDRESS = require("./contract").contract_address;
-
+const port = process.env.PORT || 5000;
 mkdirp.sync(require("os").homedir() + "/.ethfaucetssl/queue");
 mkdirp.sync(require("os").homedir() + "/.ethfaucetssl/exceptions");
 const dbQueue = level(require("os").homedir() + "/.ethfaucetssl/queue");
@@ -97,8 +97,8 @@ lightwallet.keystore.deriveKeyFromPassword(config.walletpwd, function(
 
 
     //start webserver...
-    app.listen(config.httpport, function() {
-        console.log("faucet listening on port ", config.httpport);
+    app.listen(port, function() {
+        console.log("faucet listening on port ", port);
     });
 
     // const options = {
