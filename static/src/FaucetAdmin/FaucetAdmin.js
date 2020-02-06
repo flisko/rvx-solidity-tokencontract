@@ -116,7 +116,7 @@ handleFaucetTokenChange(){
    async getData(){
      setTimeout(()=>{
       this.setState({useraccount:localStorage.getItem("useraccount")});
-      if(this.state.useraccount===this.state.operatoraddress || this.state.useraccount === this.state.owneraddress)
+      if(this.state.useraccount.toLowerCase()==this.state.operatoraddress.toLowerCase() || this.state.useraccount.toLowerCase() == this.state.owneraddress.toLowerCase())
       {
         this.setState({adminenabled:true});
       }

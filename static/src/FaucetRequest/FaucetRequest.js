@@ -4,7 +4,6 @@ import Eth from "ethjs";
 import config from "react-global-configuration";
 import axios from "axios";
 import timespan from "timespan";
-import Web3 from "web3";
 
 export class FaucetRequest extends Component {
   constructor(props) {
@@ -16,6 +15,7 @@ export class FaucetRequest extends Component {
     this.clearMessages = this.clearMessages.bind(this);
     this.faucetEnabled = this.faucetEnabled.bind(this);
     this.updateAddress = this.updateAddress.bind(this);
+    this.isLocked = this.isLocked.bind(this);
   }
   async updateAddress(value){
     this.setState({useraccount:value});
@@ -110,42 +110,40 @@ export class FaucetRequest extends Component {
 
    
   }
+  isLocked() {
+    window.wan3.eth.getAccounts(function(err, accounts){
+       if (err != null) {
+          return(0);
+       }
+       else if (accounts.length === 0) {
+        return(0);
+       }
+       else {
+          return(1);
+       }
+    });
+ }
   async componentDidMount() {
     localStorage.clear();
     this.faucetEnabled();
      window.addEventListener('load', function () {
+      if (typeof wan3 !== 'undefined') {        
+          if (window.wan3.currentProvider.isWanMask === true) {
+              window.wan3.eth.getAccounts(function(err,result){
+                if(err!=null){
   
-      if (typeof web3 !== 'undefined') {        
-          window.web3 = new Web3(window.web3.currentProvider)
-  
-          if (window.web3.currentProvider.isMetaMask === true) {
-            try {
-              // Request account access if needed
-              Promise.all([
-                window.ethereum.enable()
-              ]);
-              window.web3.eth.getAccounts((error, accounts) => {
-                if (accounts.length === 0) {
-
+                }else if(result.length===0){
+                  
+                }else{
+                  console.log("result: "+result);
+                  localStorage.setItem("useraccount",result);
                 }
-                else {
-                  localStorage.setItem("useraccount",accounts);
-                  //  console.log("accounts:"+accounts);
-                }
-            });
-              // Acccounts now exposed
-            } catch (error) {
-              console.error(error);
-            }
-            
-          } else {
-              // Another web3 provider
+              })
           }
-      } else {
-          // No web 3 provider
-      }    
+        }
+          
   });
-  }
+}
 
   render() {
     return (
