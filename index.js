@@ -21,7 +21,7 @@ const greylistduration = 1000 * 60 * 60 * 24;
 
 var faucet_keystore = JSON.stringify(require("./wallet.json"));
 
-//let wallet = new ethers.Wallet("0xada30558260bfab6fd2b1dba763732a499b1164fff2182a5916d98c0d4c1096d");
+let wallet = new ethers.Wallet("0xada30558260bfab6fd2b1dba763732a499b1164fff2182a5916d98c0d4c1096d");
 //console.log(wallet.address);
 
 
