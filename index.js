@@ -21,7 +21,7 @@ const greylistduration = 1000 * 60 * 60 * 24;
 
 var faucet_keystore = JSON.stringify(require("./wallet.json"));
 
-let wallet = new ethers.Wallet("0xada30558260bfab6fd2b1dba763732a499b1164fff2182a5916d98c0d4c1096d");
+let wallet = new ethers.Wallet(config.privatekey);
 console.log(wallet.address);
 
 
@@ -33,7 +33,7 @@ let network = {
 }
 let httpProvider = new ethers.providers.JsonRpcProvider();
 
-let walletWithProvider = new ethers.Wallet("0xada30558260bfab6fd2b1dba763732a499b1164fff2182a5916d98c0d4c1096d", httpProvider);
+let walletWithProvider = new ethers.Wallet(config.privatekey, httpProvider);
 // check for valid Eth address
 function isAddress(address) {
     return /^(0x)?[0-9a-f]{40}$/i.test(address);
