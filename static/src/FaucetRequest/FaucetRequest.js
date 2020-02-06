@@ -29,9 +29,8 @@ export class FaucetRequest extends Component {
     this.setState({ faucetresponse: null, fauceterror: null });
   }
  async faucetEnabled() {
-    let apiUrl = "/faucetenabled/";
     axios
-    .get(apiUrl)
+    .get("/faucetenabled")
     .then(response => {
       if(response.status ===200){
         if(response.data.faucetenabled[0]){
