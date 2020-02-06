@@ -186,7 +186,7 @@ export class FaucetRequest extends Component {
                 onClick={this.clearMessages}
               >
                 <div className="message-body">
-                  <p>Test ETH sent to {this.state.faucetresponse.address}.</p>
+                  <p>Test RVX sent to {this.state.faucetresponse.address}.</p>
                   <p>
                     Transaction hash{" "}
                     <a

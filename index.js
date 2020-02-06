@@ -578,7 +578,7 @@ app.get("/donate/:address", function(req, res) {
                             doDonation(address)
                                 .then(txhash => {
                                     Promise.all([
-                                        setException(ip, "greylist"),
+                                        //setException(ip, "greylist"),
                                         setException(address, "greylist")
                                     ]).then(() => {
                                         var reply = {
