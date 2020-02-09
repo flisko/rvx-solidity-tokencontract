@@ -48,7 +48,7 @@ class FaucetInfo extends Component {
             <a target="_new" href={this.state.faucetinfo.etherscanlink}>
               {this.state.faucetinfo.account}
             </a>
-            ( balance{" "}
+             (balance{" "}
             <NumberFormat
               value={Math.floor(this.state.faucetinfo.balance)}
               displayType={"text"}
