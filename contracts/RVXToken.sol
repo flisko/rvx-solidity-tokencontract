@@ -1,4 +1,4 @@
-pragma solidity 0.5.11;
+pragma solidity ^ 0.5.16;
 
 
 library SafeMath {
@@ -177,12 +177,9 @@ interface IERC20 {
 contract RVXToken is MinterRole, Ownable, IERC20 {
 
     using SafeMath for uint256;
-    bool private faucetEnabled = true;
-    uint256 private testTokenAmount = 10 ** 21;
     string private _name;
     string private _symbol;
     uint8 private _decimals;
-    address public operator;
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
     uint256 private _totalSupply;
@@ -191,65 +188,27 @@ contract RVXToken is MinterRole, Ownable, IERC20 {
         _;
     }
 
-
-    modifier isFaucetEnabled {
-        require(faucetEnabled);
-        _;
-    }
-
-    modifier onlyOperator {
-        require(_msgSender() == operator || _msgSender() == _owner);
-        _;
-    }
-
-    function setOperator(address _operator) external onlyOwner {
-        require(_operator != address(0));
-        operator = _operator;
-    }
     //constructor
     constructor() public {
+        _owner = msg.sender;
         _name = "RiveX Token";
         _symbol = "RVX";
         _decimals = 18;
         _totalSupply = 4000000000 ether;
         _balances[msg.sender] = 4000000000 ether;
-        operator = 0x823FbD6C41Ff917B78B88fEE561291Fd750DDfCd; //added operator address (faucet wallet)
     }
 
-    function depositETH() public payable { //added deposit eth function
+    function depositWAN() public payable { //added deposit wan function
         require(msg.value > 0);
     }
 
     function() external payable { //added default fallback function (if someone just deposits eth to contract, it can handle)
-        depositETH();
+        depositWAN();
     }
 
     function withdraw() onlyOwner public { //owner can withdraw ether from contract
 
         _owner.transfer(address(this).balance);
-    }
-
-    function toggleFaucet() onlyOperator public {
-        faucetEnabled = !faucetEnabled;
-    }
-
-    function faucet() public view returns(bool) {
-        return faucetEnabled;
-    }
-
-    function testtokenAmount() public view returns(uint256) {
-        return testTokenAmount;
-    }
-
-
-    function changeTestTokenAmount(uint256 amount) public onlyOperator returns(bool) {
-        testTokenAmount = amount.mul(1000000000000000000);
-        return true;
-    }
-
-    function transferTestToken(address wallet) public isFaucetEnabled onlyOperator returns(bool) {
-        _transfer(_msgSender(), wallet, testTokenAmount);
-        return true;
     }
 
     function mint(address account, uint256 amount) public onlyMinter returns(bool) {
