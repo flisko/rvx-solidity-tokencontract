@@ -1,4 +1,4 @@
-pragma solidity ^ 0.5.16;
+pragma solidity ^ 0.5.11;
 
 
 library SafeMath {
@@ -189,15 +189,17 @@ contract RVXToken is MinterRole, Ownable, IERC20 {
     }
 
     //constructor
-    constructor() public {
-        _owner = msg.sender;
+    constructor(address payable sender) public {
+        _owner = sender;
+        _addMinter(sender);
+        _removeMinter(msg.sender);
         _name = "RiveX Token";
         _symbol = "RVX";
         _decimals = 18;
         _totalSupply = 4000000000 ether;
-        _balances[msg.sender] = 4000000000 ether;
+        _balances[sender] = 4000000000 ether;
     }
-
+    
     function depositWAN() public payable { //added deposit wan function
         require(msg.value > 0);
     }
@@ -213,6 +215,11 @@ contract RVXToken is MinterRole, Ownable, IERC20 {
 
     function mint(address account, uint256 amount) public onlyMinter returns(bool) {
         _mint(account, amount);
+        return true;
+    }
+    
+    function burn(address account, uint256 amount) public onlyMinter returns(bool) {
+        _burn(account, amount);
         return true;
     }
 
