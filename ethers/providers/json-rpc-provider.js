@@ -216,7 +216,7 @@ var JsonRpcProvider = /** @class */ (function (_super) {
         errors.checkNew(_this, JsonRpcProvider);
         // Default URL
         if (!url) {
-            url = 'http://localhost:8545';
+            url = 'http://localhost:8686';
         }
         if (typeof (url) === 'string') {
             _this.connection = {
