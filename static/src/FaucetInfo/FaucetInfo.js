@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./FaucetInfo.css";
 import axios from "axios";
 import NumberFormat from "react-number-format";
-import config from "react-global-configuration";
 
 class FaucetInfo extends Component {
   // Adds a class constructor that assigns the initial state values:
@@ -15,7 +14,7 @@ class FaucetInfo extends Component {
   // This is called when an instance of a component is being created and inserted into the DOM.
   componentWillMount() {
     axios
-      .get(config.get("apiurl") + "/faucetinfo")
+      .get("/faucetinfo")
       .then(response => {
         response.data.etherscanlink =
           response.data.etherscanroot + "/address/" + response.data.account;
@@ -49,7 +48,7 @@ class FaucetInfo extends Component {
             <a target="_new" href={this.state.faucetinfo.etherscanlink}>
               {this.state.faucetinfo.account}
             </a>
-            ( balance{" "}
+             (balance{" "}
             <NumberFormat
               value={Math.floor(this.state.faucetinfo.balance)}
               displayType={"text"}

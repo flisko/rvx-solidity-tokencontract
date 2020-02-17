@@ -4,8 +4,9 @@
 	"payoutamountinether": 1000,
 	"queuesize": 10,
 	"walletpwd": "Rivex123!",
+	"privatekey":"0xada30558260bfab6fd2b1dba763732a499b1164fff2182a5916d98c0d4c1096d",
 	"httpport": 3008,
 	"web3": {
-		"host": "http://157.245.205.28:8545"
+		"host": "http://localhost:8545"
 	}
 }

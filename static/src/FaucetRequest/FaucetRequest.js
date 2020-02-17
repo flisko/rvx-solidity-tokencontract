@@ -29,9 +29,8 @@ export class FaucetRequest extends Component {
     this.setState({ faucetresponse: null, fauceterror: null });
   }
  async faucetEnabled() {
-    let apiUrl = config.get("apiurl") + "/faucetenabled/";
     axios
-    .get(apiUrl)
+    .get("/faucetenabled")
     .then(response => {
       if(response.status ===200){
         if(response.data.faucetenabled[0]){
@@ -59,7 +58,7 @@ export class FaucetRequest extends Component {
     if (Eth.isAddress(this.state.targetAccount)) {
       this.setState({ requestrunning: true });
 
-      let apiUrl = config.get("apiurl") + "/donate/" + this.state.targetAccount;
+      let apiUrl = "/donate/" + this.state.targetAccount;
       axios
         .get(apiUrl)
         .then(response => {
