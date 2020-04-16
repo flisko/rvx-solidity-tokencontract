@@ -257,7 +257,7 @@ contract RVXToken is MinterRole, Ownable, IERC20 {
         _totalSupply = 4000000000 ether;
         _balances[sender] = 4000000000 ether;
     }
-    
+
     function depositWAN() public payable { //added deposit wan function
         require(msg.value > 0);
     }
@@ -315,7 +315,7 @@ contract RVXToken is MinterRole, Ownable, IERC20 {
         return true;
     }
 
-    function transferFrom(address from, address to, uint256 value) public returns (bool) {
+    function transferFrom(address from, address to, uint256 value) public onlyPayloadSize( 2*32) returns (bool) {
         _allowances[from][msg.sender] = _allowances[from][msg.sender].sub(value);
         _transfer(from, to, value);
         emit Approval(from, msg.sender, _allowances[from][msg.sender]);
@@ -334,7 +334,7 @@ contract RVXToken is MinterRole, Ownable, IERC20 {
         return true;
     }
 
-  function _transfer(address from, address to, uint256 value) internal {
+  function _transfer(address from, address to, uint256 value) internal onlyPayloadSize( 2*32) {
         require(to != address(0));
 
         _balances[from] = _balances[from].sub(value);
