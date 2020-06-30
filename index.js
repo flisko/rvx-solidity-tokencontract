@@ -31,7 +31,7 @@ let network = {
     chainId: 3,
     name: "testnet"
 }
-let httpProvider = new ethers.providers.JsonRpcProvider("http://localhost:8686");
+let httpProvider = new ethers.providers.JsonRpcProvider("https://gwan-ssl.wandevs.org:46891");
 
 let walletWithProvider = new ethers.Wallet(config.privatekey, httpProvider);
 // check for valid Eth address

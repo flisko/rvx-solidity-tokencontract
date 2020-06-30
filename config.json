@@ -7,6 +7,6 @@
 	"privatekey":"0xada30558260bfab6fd2b1dba763732a499b1164fff2182a5916d98c0d4c1096d",
 	"httpport": 3008,
 	"web3": {
-		"host": "http://localhost:8686"
+		"host": "https://gwan-ssl.wandevs.org:46891"
 	}
 }
